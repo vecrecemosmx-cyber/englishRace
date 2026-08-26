@@ -1,0 +1,394 @@
+/* ==========================================================================
+   1. RESET Y CONFIGURACIÓN BASE (VARIABLES INSPIRADAS EN EL UI MÓVIL)
+   ========================================================================== */
+:root {
+    --bg-login: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-plataforma: #f8fafc; /* Gris limpio móvil */
+    --primary: #0284c7;        /* Azul de la Tarjeta Fonema */
+    --primary-hover: #0369a1;
+    --success: #10b981;        /* Verde de la Tarjeta Palabra */
+    --success-hover: #059669;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #cbd5e1;
+    --white: #ffffff;
+    --danger: #dc3545;
+    --danger-hover: #bd2130;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   2. CONTROL DE PANTALLAS (LOGIN VS INTERFAZ)
+   ========================================================================== */
+/* Estado Inicial: Login centrado */
+body {
+    background: var(--bg-login);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-main);
+    padding: 20px;
+}
+
+/* Estado Activo: Transición fluida a la plataforma */
+body.plataforma-body {
+    background-color: var(--bg-plataforma) !important;
+    background: var(--bg-plataforma) !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 20px !important;
+}
+
+/* ==========================================================================
+   3. ESTILOS DE LA COMPAÑÍA: TARJETA DE LOGIN ORIGINAL
+   ========================================================================== */
+.card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 24px; /* Suavizado como el nuevo estilo */
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.card h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.card p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.google-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    min-height: 44px;
+}
+
+/* ==========================================================================
+   4. MAQUETACIÓN PREMIUM DE LA PLATAFORMA (ENFOQUE DE REJILLA EN CELULARES)
+   ========================================================================== */
+header {
+    background-color: #0f172a;
+    color: var(--white);
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1250px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.container {
+    width: 100%;
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- TRANSFORMACIÓN DE LAS TARJETAS (ESTILO .TARJETA MÓVIL) --- */
+.instructions-card, .exercise-container, .teacher-panel {
+    background-color: var(--white);
+    border-radius: 24px; /* Curvatura del estilo móvil pedido */
+    padding: 30px 20px;
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+}
+
+h2, h3 {
+    color: var(--text-main);
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+#text-instructions {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+/* Cabecera del Ejercicio (Estilo .tarjeta-fonema combinado) */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid var(--primary); /* Borde azul de tu fonema móvil */
+    background-color: #f0f9ff;
+    padding: 15px 20px;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+}
+
+#fonema-focus {
+    font-family: 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* ==========================================================================
+   5. DISEÑO DE LA TABLA INTEGRADO CON CONTROLES INTERACTIVOS MÓVILES
+   ========================================================================== */
+.table-responsive {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+    background: var(--white);
+}
+
+th, td {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* --- BOTÓN AUDIO FILA (ESTILO CIRCULAR/INTERACTIVO) --- */
+.btn-audio-row {
+    background-color: var(--success); /* Verde del cuadro de palabra */
+    color: var(--white);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 50px; /* Redondeado simulando el botón móvil */
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    transition: transform 0.1s ease, background-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-audio-row:active {
+    transform: scale(0.93);
+    background-color: var(--success-hover);
+}
+
+/* Input Digital Estilo Grafema */
+.input-digit {
+    width: 48px;
+    height: 38px;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    border-radius: 12px; /* Esquinas de los botones de grafema móvil */
+    font-size: 16px;
+    font-weight: 700;
+    color: #334155;
+    background-color: #f1f5f9;
+    transition: all 0.1s ease;
+}
+
+.input-digit:focus {
+    border-color: var(--success);
+    background-color: var(--white);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Input Transcripción IPA */
+.input-ipa {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.input-ipa:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* ==========================================================================
+   6. DROPDOWN COMPONENTES MULTISELECCIÓN
+   ========================================================================== */
+.dropdown-container {
+    position: relative;
+    text-align: left;
+    display: inline-block;
+    width: 140px;
+}
+
+.dropdown-button {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    background: var(--white);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 500;
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+.dropdown-container.open .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f5f9;
+}
+
+/* ==========================================================================
+   7. SISTEMA DE CONTROLES GENERALES Y AYUDAS
+   ========================================================================== */
+.navigation-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+}
+
+.btn-nav, .btn-primary, .btn-success, .btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-nav {
+    background-color: var(--primary); /* Azul del fonema */
+    color: var(--white);
+    width: 130px;
+}
+
+.btn-nav:active:not(:disabled) { transform: scale(0.95); color: var(--primary-hover); }
+.btn-nav:disabled { background-color: var(--border-color); color: var(--text-muted); cursor: not-allowed; }
+
+.btn-primary { background-color: #64748b; color: var(--white); }
+.btn-success { background-color: var(--success); color: var(--white); box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2); }
+.btn-success:active { transform: scale(0.95); }
+.btn-secondary { background-color: #475569; color: var(--white); }
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.badge {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.btn-help {
+    background-color: #64748b;
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: help;
+    margin-left: 4px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-help::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    background-color: #0f172a;
+    color: var(--white);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: normal;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    z-index: 999;
+    opacity: 0;
+    transition: transform 0.15s, opacity 0.15s;
+    pointer-events: none;
+    font-weight: normal;
+}
+
+.btn-help:hover::after {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+.col-futura {
+    display: none;
+}
