@@ -1,13 +1,16 @@
+// === NUEVO INICIO MODULAR Y SEGURO PARA TU SCRIPT.JS ===
+// Importamos la función nativa directamente desde el servidor oficial de módulos de Supabase
+import { createClient } from 'https://jsdelivr.net';
+
+// Constantes reales de tu base de datos de Speakeasy
+const SUPABASE_URL = "https://bbvqfwpvwycnaeqfrtfp.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJidnFmd3B2d3ljbmFlcWZydGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MjA2NzksImV4cCI6MjEwMzI5NjY3OX0.a7vceVNPz3I1BjVjLX60cXSP2h73Th5rXjjP9YA0yUI";
+
+// Inicialización limpia e idéntica a la que encontraste en la documentación
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. CONFIGURACIÓN DE CONEXIÓN DE SUPABASE (CON ENLACE DE SEGURIDAD) ---
-    const SUPABASE_URL = "https://supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJidnFmd3B2d3ljbmFlcWZydGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MjA2NzksImV4cCI6MjEwMzI5NjY3OX0.a7vceVNPz3I1BjVjLX60cXSP2h73Th5rXjjP9YA0yUI";
-    
-    // El operador unificado busca tanto 'window.supabase' como 'supabase' directamente en el navegador
-    const supabaseClientProvider = window.supabase || supabase;
-    const supabase = supabaseClientProvider.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     // --- 2. CAPTURA DE COMPONENTES DEL DOM PARA AUTENTICACIÓN ---
     const authScreen = document.getElementById('auth-screen');
     const mainAppContent = document.getElementById('main-app-content');
@@ -48,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         authEmailInput.classList.remove('input-invalid');
         authPasswordInput.classList.remove('input-invalid');
     }
-
     // --- 3. MAPEO DE FONEMAS A LOS ENTRIES DEL JSON ---
     const reverseFonemaMapping = { "1": "ə", "2": "ɪ", "3": "ɛ", "4": "æ", "5": "ʌ" };
     
@@ -71,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "4. ¿En qué sílaba está el énfasis o acento?",
         "5. ¿En qué sílaba está la vocal que estamos practicando?"
     ];
+
     // --- 5. CAPTURA DE COMPONENTES DEL DOM PARA EL EJERCICIO ---
     const instructionText = document.querySelector('.instruction-text');
     const answerInput = document.getElementById('student-answer');
@@ -108,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         authSubmitBtn.textContent = isLoginView ? "INGRESANDO..." : "CREANDO CUENTA...";
 
         if (isLoginView) {
-            // Lógica de Inicio de Sesión
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
@@ -122,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 concederAccesoPlataforma();
             }
         } else {
-            // Lógica de Registro de Usuario Nuevo
             const { data, error } = await supabase.auth.signUp({
                 email: email,
                 password: password,
@@ -144,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Función que oculta el login y arranca Speakeasy
     function concederAccesoPlataforma() {
         authScreen.classList.add('hidden');
         mainAppContent.classList.remove('hidden');
@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showError("⚠️ Error al conectar con el servidor.");
         }
     }
+
     // --- 8. LÓGICA DE CONTROL E INICIALIZACIÓN ---
     function initExercise() {
         const currentDataArray = datasetByFonema[currentFonema];
@@ -391,7 +392,6 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => answerInput.style.transform = 'translateX(0)', 100);
     }
 
-    // Limpiador genérico de errores del input de prácticas
     function clearError() {
         errorMessage.textContent = "";
         answerInput.classList.remove('input-invalid');
