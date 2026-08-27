@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex < 4) {
             let correctValue = "";
             switch(currentQuestionIndex) {
-                case 0: correctValue = currentData.f; successNote = `¡Excelente! Componen la palabra ${currentData.f} sonidos.`; break;
+                case 0: correctValue = currentData.f; successNote = `¡Excelente! Esta palabra esta compuesta por ${currentData.f} sonidos.`; break;
                 case 1: correctValue = currentData.fc; successNote = `¡Correcto! Tiene ${currentData.fc} sonidos consonantes.`; break;
                 case 2: correctValue = currentData.fv; successNote = `¡Muy bien! Tiene ${currentData.fv} sonidos vocálicos.`; break;
                 case 3: correctValue = currentData.stress; successNote = `¡Exacto! El énfasis está en la sílaba ${currentData.stress}.`; break;
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const digitoB = dbValue.charAt(1);
                 if (value === digitoA || value === digitoB) {
                     isCorrect = true;
-                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la sílaba ${value}.`;
+                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la sílaba ${value}. Recuerda responder todos los lugares donde aparece pues en este caso también aparece en la sílaba ${value === digitoA ? digitoB : digitoA}.`;
                 }
             } else {
                 if (value === dbValue) {
@@ -211,13 +211,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isCorrect) {
             feedbackPhrase.innerHTML = `<span class="word-correct">${successNote}</span>`;
-            tipText.innerHTML = `Análisis completado para la palabra <strong>${currentData.word}</strong>.`;
+            tipText.innerHTML = `Recuerda que esta práctica se trata de poner atención a los sonidos no a los grafemas.`;
             hasAnsweredCorrectly = true;
             actionButton.disabled = false;
             actionButton.classList.remove('btn-disabled');
         } else {
             feedbackPhrase.innerHTML = `Tu respuesta: <span class="word-error">${value}</span>. ¡Inténtalo de nuevo!`;
-            tipText.innerHTML = `Revisa la estructura para: <strong>${currentData.word}</strong>.`;
+            tipText.innerHTML = `No olvides utilizar la técnica de eliminación de sonidos. Uno por uno de izquierda a derecha para no deformar la forma en que se pronuncian los fonemas vocales ni consonantes`;
             hasAnsweredCorrectly = false;
             actionButton.disabled = true;
             actionButton.classList.add('btn-disabled');
