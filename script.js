@@ -1,71 +1,20 @@
-// === NUEVO INICIO MODULAR Y SEGURO PARA TU SCRIPT.JS ===
-// Importamos la función nativa directamente desde el servidor oficial de módulos de Supabase
-import { createClient } from 'https://jsdelivr.net';
-
-// Constantes reales de tu base de datos de Speakeasy
-const SUPABASE_URL = "https://bbvqfwpvwycnaeqfrtfp.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJidnFmd3B2d3ljbmFlcWZydGZwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MjA2NzksImV4cCI6MjEwMzI5NjY3OX0.a7vceVNPz3I1BjVjLX60cXSP2h73Th5rXjjP9YA0yUI";
-
-// Inicialización limpia e idéntica a la que encontraste en la documentación
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 2. CAPTURA DE COMPONENTES DEL DOM PARA AUTENTICACIÓN ---
-    const authScreen = document.getElementById('auth-screen');
-    const mainAppContent = document.getElementById('main-app-content');
-    const authForm = document.getElementById('auth-form');
-    const authEmailInput = document.getElementById('auth-email');
-    const authPasswordInput = document.getElementById('auth-password');
-    const authErrorMessage = document.getElementById('auth-error-message');
-    const authSubmitBtn = document.getElementById('auth-submit-btn');
-    const authToggleView = document.getElementById('auth-toggle-view');
-    const authSubtitle = document.getElementById('auth-subtitle');
-
-    let isLoginView = true; // Estado que controla si se muestra Login o Registro
-
-    // Intercambiador dinámico de vistas (Login / Registro) sin tocar estilos
-    authToggleView.addEventListener('click', () => {
-        isLoginView = !isLoginView;
-        clearAuthError();
-        
-        if (isLoginView) {
-            authSubtitle.textContent = "Ingresa a tu cuenta de práctica fonética";
-            authSubmitBtn.textContent = "INICIAR SESIÓN";
-            authToggleView.textContent = "¿No tienes una cuenta? Regístrate aquí";
-        } else {
-            authSubtitle.textContent = "Crea una cuenta nueva de estudiante";
-            authSubmitBtn.textContent = "REGISTRARME COMO ALUMNO";
-            authToggleView.textContent = "¿Ya tienes cuenta? Inicia sesión aquí";
-        }
-    });
-
-    function showAuthError(message) {
-        authErrorMessage.textContent = message;
-        authEmailInput.classList.add('input-invalid');
-        authPasswordInput.classList.add('input-invalid');
-    }
-
-    function clearAuthError() {
-        authErrorMessage.textContent = "";
-        authEmailInput.classList.remove('input-invalid');
-        authPasswordInput.classList.remove('input-invalid');
-    }
-    // --- 3. MAPEO DE FONEMAS A LOS ENTRIES DEL JSON ---
+    // --- 1. MAPEO DE FONEMAS A LOS ENTRIES DEL JSON ---
     const reverseFonemaMapping = { "1": "ə", "2": "ɪ", "3": "ɛ", "4": "æ", "5": "ʌ" };
     
     // Rutas base en GitHub para audios y base de datos
-    const baseAudioUrl = "https://githubusercontent.com";
-    const jsonUrl = "https://githubusercontent.com";
+    const baseAudioUrl = "https://raw.githubusercontent.com/vecrecemosmx-cyber/vecrecemosmx-cyber.github.io/main/databases/audio/";
+    const jsonUrl = "https://raw.githubusercontent.com/vecrecemosmx-cyber/vecrecemosmx-cyber.github.io/main/databases/tables/words_database.json";
     
-    // --- 4. VARIABLES DE CONTROL GLOBALES DEL EJERCICIO ---
+    // --- 2. VARIABLES DE CONTROL GLOBALES DEL EJERCICIO ---
     let datasetByFonema = { "ə": [], "ɪ": [], "ɛ": [], "æ": [], "ʌ": [] };
     let currentFonema = "ə";       
     let currentWordIndex = 0;       
     let currentQuestionIndex = 0;   
     let hasAnsweredCorrectly = false; 
 
-    // Lista secuencial de preguntas
+    // Enunciado exacto de tus 5 preguntas secuenciales
     const questionsTexts = [
         "1. ¿Cuántos sonidos componen la palabra?",
         "2. ¿Cuántos fonemas consonantes tiene?",
@@ -74,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "5. ¿En qué sílaba está la vocal que estamos practicando?"
     ];
 
-    // --- 5. CAPTURA DE COMPONENTES DEL DOM PARA EL EJERCICIO ---
+    // --- 3. CAPTURA DE COMPONENTES DEL DOM (Sincronizado al HTML) ---
     const instructionText = document.querySelector('.instruction-text');
     const answerInput = document.getElementById('student-answer');
     const errorMessage = document.getElementById('error-message');
@@ -94,64 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const speedSlider = document.getElementById('speed-slider');
     const speedBubble = document.getElementById('speed-bubble');
 
-    // --- 6. PROCESAMIENTO DE AUTENTICACIÓN CON SUPABASE ---
-    authForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearAuthError();
-
-        const email = authEmailInput.value.trim();
-        const password = authPasswordInput.value.trim();
-
-        if (password.length < 6) {
-            showAuthError("⚠️ La contraseña debe tener al menos 6 caracteres.");
-            return;
-        }
-
-        authSubmitBtn.disabled = true;
-        authSubmitBtn.textContent = isLoginView ? "INGRESANDO..." : "CREANDO CUENTA...";
-
-        if (isLoginView) {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                showAuthError("❌ Credenciales inválidas o usuario no registrado.");
-                authSubmitBtn.disabled = false;
-                authSubmitBtn.textContent = "INICIAR SESIÓN";
-            } else {
-                concederAccesoPlataforma();
-            }
-        } else {
-            const { data, error } = await supabase.auth.signUp({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                showAuthError(`❌ Error: ${error.message}`);
-                authSubmitBtn.disabled = false;
-                authSubmitBtn.textContent = "REGISTRARME COMO ALUMNO";
-            } else {
-                alert("🎉 ¡Registro exitoso! Ya puedes iniciar sesión con tu cuenta.");
-                isLoginView = true;
-                authSubtitle.textContent = "Ingresa a tu cuenta de práctica fonética";
-                authSubmitBtn.textContent = "INICIAR SESIÓN";
-                authToggleView.textContent = "¿No tienes una cuenta? Regístrate aquí";
-                authPasswordInput.value = "";
-                authSubmitBtn.disabled = false;
-            }
-        }
-    });
-
-    function concederAccesoPlataforma() {
-        authScreen.classList.add('hidden');
-        mainAppContent.classList.remove('hidden');
-        loadDatabaseFromJSON();
-    }
-
-    // --- 7. FUNCIÓN DE CARGA DINÁMICA CON JSON ---
+    // --- 4. FUNCIÓN DE CARGA DINÁMICA CON JSON ---
     async function loadDatabaseFromJSON() {
         try {
             const response = await fetch(jsonUrl);
@@ -188,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 8. LÓGICA DE CONTROL E INICIALIZACIÓN ---
+      // --- 5. LÓGICA DE CONTROL E INICIALIZACIÓN ---
     function initExercise() {
         const currentDataArray = datasetByFonema[currentFonema];
         if (!currentDataArray || currentDataArray.length === 0) {
@@ -319,10 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
     }
 
-    // --- 9. CONTROLADORES DE AUDIO Y REPRODUCCIÓN ---
+    // --- 6. CONTROLADORES DE AUDIO Y REPRODUCCIÓN ---
+    // REPRODUCCIÓN AUDIO PALABRA CON ENFOQUE INMEDIATO Y TECLADO
     function handlePlayWordAudio(event) {
         event.preventDefault();
+        
+        // 1. Hacemos el focus inmediatamente para activar el teclado numérico sin retrasos
         answerInput.focus();
+        
+        // 2. Hacemos el desplazamiento suave de la pantalla de forma paralela
         responseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         const currentData = datasetByFonema[currentFonema][currentWordIndex];
@@ -337,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.speechSynthesis.speak(utterance);
         }
     }
+
 
     function handlePlayVocalAudio(event) {
         event.preventDefault();
@@ -356,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 10. UTILIDADES DE INTERFAZ Y ACTUALIZACIÓN ---
+    // --- 7. UTILIDADES DE INTERFAZ Y ACTUALIZACIÓN ---
     function changeFonemaDropdown(event) {
         currentFonema = event.target.value;
         currentWordIndex = 0;
@@ -397,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         answerInput.classList.remove('input-invalid');
     }
 
-    // --- 11. ASOCIACIÓN DE EVENTOS (LISTENERS) ---
+    // --- 8. ASOCIACIÓN DE EVENTOS (LISTENERS) ---
     answerInput.addEventListener('input', () => { 
         if (errorMessage.textContent !== "") clearError(); 
     });
@@ -436,4 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click', closeSidebarMenu);
         document.addEventListener('touchstart', closeSidebarMenu);
     }
+
+    // ARRANQUE AUTOMÁTICO DE LA APLICACIÓN
+    loadDatabaseFromJSON();
 });
