@@ -78,32 +78,34 @@
                     <h2 id="instruction-text" class="instruction-text">1. ¿Cuántos sonidos componen la palabra?</h2>
                 </div>
 
-                <!-- Reproductor Multimedia Superior Dividido -->
-                <div class="practice-card split-response-card">
-                    <div class="response-left-pane">
-                        <button id="play-word-btn" class="audio-btn">🔊 Palabra</button>
-                    </div>
-                    <div class="response-divider-line"></div>
-                    <div class="response-right-pane">
-                        <button id="play-vocal-btn" class="audio-btn vocal-btn">🔊 Vocal</button>
-                    </div>
-                </div>
-
-                <!-- Deslizador de Velocidad Integrado -->
-                <div class="practice-card" style="padding: 1.5rem; gap: 1rem;">
-                    <div class="interactive-wave-box">
-                        <div class="wave-container">
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
-                            <div class="wave-bar"></div>
+                <!-- Reproductor Multimedia Superior Unificado (Botones + Velocidad) -->
+                <div class="practice-card unified-media-card">
+                    <!-- Fila Superior: Botones divididos por la mitad de forma invisible -->
+                    <div class="media-buttons-row">
+                        <div class="media-column-left">
+                            <button id="play-word-btn" class="audio-btn">🔊 Palabra</button>
                         </div>
-                        <input type="range" id="speed-slider" class="over-wave-slider" min="0.5" max="2.0" step="0.25" value="1.25">
-                        <span id="speed-bubble" class="speed-bubble-indicator">1.25x</span>
+                        <div class="media-column-right">
+                            <button id="play-vocal-btn" class="audio-btn vocal-btn">🔊 Vocal</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Fila Inferior: Control deslizante continuo sin divisiones -->
+                    <div class="media-slider-row">
+                        <div class="interactive-wave-box">
+                            <div class="wave-container">
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                            </div>
+                            <input type="range" id="speed-slider" class="over-wave-slider" min="0.5" max="2.0" step="0.25" value="1.25">
+                            <span id="speed-bubble" class="speed-bubble-indicator">1.25x</span>
+                        </div>
                     </div>
                 </div>
-
+                
                 <!-- Sección de Entrada de Respuesta -->
                 <div class="response-card split-response-card">
                     <div class="response-left-pane">
