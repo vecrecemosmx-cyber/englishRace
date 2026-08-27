@@ -749,3 +749,11 @@ body.plataforma-body {
         padding: 0.85rem 1rem !important;
     }
 }
+
+/* Ajuste de alineación para el icono SVG dentro de los botones */
+.audio-btn .ui-icon {
+    fill: currentColor !important;
+    width: 22px !important;
+    height: 22px !important;
+    margin-right: 8px;
+}
