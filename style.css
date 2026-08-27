@@ -1,17 +1,19 @@
 /* ==========================================================================
-   1. VARIABLES DE COLOR Y CONFIGURACIÓN GENERAL
+   1. VARIABLES DE COLOR Y CONFIGURACIÓN GENERAL (DISEÑO PREMIUM)
    ========================================================================== */
 :root {
-    --bg-main: #F4F7FA;          /* Gris/azul ultra claro para calma */
-    --bg-card: #FFFFFF;          /* Blanco puro para aislar contenido */
-    --text-dark: #1E293B;        /* Azul oscuro profesional para textos */
-    --text-muted: #64748B;       /* Gris para elementos secundarios */
-    --color-blue: #0284C7;       /* Azul base: lógica y concentración */
-    --color-green: #22C55E;      /* Verde: éxito y pronunciación correcta */
-    --color-yellow: #FEF08A;     /* Amarillo suave: atención y fonética */
-    --color-yellow-dark: #CA8A04;/* Texto sobre fondo amarillo */
-    --color-orange: #F97316;     /* Naranja/Coral: acción principal */
-    --bg-sidebar: #0F172A;       /* Fondo oscuro profundo para el menú */
+    --bg-login: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-main: #F4F7FA;          
+    --bg-card: #FFFFFF;          
+    --text-dark: #1E293B;        
+    --text-muted: #64748B;       
+    --color-blue: #0284C7;       
+    --color-green: #22C55E;      
+    --color-yellow: #FEF08A;     
+    --color-yellow-dark: #CA8A04;
+    --color-orange: #F97316;     
+    --bg-sidebar: #0F172A;       
+    --border-color: #cbd5e1;
 }
 
 * {
@@ -21,16 +23,72 @@
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
+/* Estado Inicial: Centrado para pantalla de Login */
 body {
-    background-color: var(--bg-main);
-    color: var(--text-dark);
+    background: var(--bg-login);
+    height: 100vh;
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-dark);
+    padding: 20px;
+    transition: background 0.3s ease;
+}
+
+/* Transición fluida a la plataforma tras el login con Google */
+body.plataforma-body {
+    background-color: var(--bg-main) !important;
+    background: var(--bg-main) !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+    padding: 0 !important;
+}
+
+/* UTILERÍA DE CONTROL DE VISIBILIDAD CRÍTICA */
+.hidden { 
+    display: none !important; 
 }
 
 /* ==========================================================================
-   2. MAQUETACIÓN E INTERFAZ BASE (HEADER, LAYOUT, SIDEBAR)
+   2. ESTILOS DE LA TARJETA DE LOGIN ORIGINAL RESCATADOS
+   ========================================================================== */
+.card {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 24px; 
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    z-index: 10;
+}
+
+.card h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.card p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.google-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    min-height: 44px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   3. INTERFAZ BASE DE LA PLATAFORMA (HEADER, LAYOUT, SIDEBAR)
    ========================================================================== */
 .app-header {
     background-color: var(--bg-card);
@@ -40,6 +98,7 @@ body {
     justify-content: space-between;
     border-bottom: 1px solid #E2E8F0;
     z-index: 10;
+    width: 100%;
 }
 
 .header-left {
@@ -73,7 +132,6 @@ body {
     height: 2.5px;
     background-color: var(--text-dark);
     border-radius: 99px;
-    transition: all 0.3s ease;
 }
 
 .progress-container {
@@ -124,6 +182,7 @@ body {
     grid-template-columns: 280px 1fr; 
     flex: 1;
     min-height: calc(100vh - 73px);  
+    width: 100%;
 }
 
 .sidebar {
@@ -192,7 +251,7 @@ body {
 }
 
 /* ==========================================================================
-   3. ÁREA CENTRAL DE TRABAJO Y MULTIMEDIA
+   4. ÁREA CENTRAL DE TRABAJO Y MULTIMEDIA
    ========================================================================== */
 .main-container {
     max-width: 800px;
@@ -202,24 +261,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.back-link {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.ui-icon {
-    width: 20px;
-    height: 20px;
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
 }
 
 .instruction-card {
@@ -252,15 +293,6 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-}
-
-.audio-buttons-group {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    width: 100%;
 }
 
 .audio-btn {
@@ -308,6 +340,7 @@ body {
     background-color: var(--color-blue);
     border-radius: 99px;
     animation: pulse 1.2s infinite ease-in-out;
+    height: 15px;
 }
 
 .wave-bar:nth-child(odd) { background-color: #38BDF8; animation-delay: 0.2s; }
@@ -376,20 +409,13 @@ body {
     z-index: 4;
 }
 
-.over-wave-slider::-webkit-slider-thumb:hover {
-    background: #0369A1;
-    transform: scale(1.15);
-}
-
 .over-wave-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
     background: var(--color-blue);
     border: 3px solid #FFFFFF;
     border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(2, 132, 199, 0.4);
     cursor: pointer;
-    transition: transform 0.1s ease, background-color 0.2s;
 }
 
 .speed-bubble-indicator {
@@ -402,11 +428,10 @@ body {
     padding: 2px 8px;
     border-radius: 99px;
     pointer-events: none;
-    z-index: 2;
 }
 
 /* ==========================================================================
-   4. TARJETAS DE RESPUESTA, VALIDACIÓN Y RETROALIMENTACIÓN
+   5. TARJETAS DE RESPUESTA Y RETROALIMENTACIÓN
    ========================================================================== */
 .response-card {
     background-color: var(--bg-card);
@@ -495,47 +520,28 @@ body {
     box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2) !important;
     transition: background-color 0.2s, transform 0.1s !important;
     white-space: nowrap;
-    width: auto !important;
 }
 
 .check-green-btn:hover { 
     background-color: #EA580C !important; 
 }
 
-.check-green-btn:active { 
-    transform: scale(0.98) !important; 
-}
-
 .font-dropdown-top {
     width: 100%;        
     font-size: 1.15rem;           
-    font-weight: 300;             
-    border-radius: 16px;          /* Bordes redondeados equilibrados para su nueva altura */
+    font-weight: 600;             
+    border-radius: 16px;          
     background-color: var(--bg-card); 
     border: 1px solid #E2E8F0;    
-    
-    /* REDUCCIÓN DE ALTURA: Bajamos el padding a la mitad para hacerlo más delgado */
     padding: 0.65rem 1.25rem;     
-    
-    color: #A8A8A8;      
+    color: #475569;      
     outline: none;
     text-align: center;
     text-align-last: center;
-    
-    /* Mantenemos la sombra y el relieve idéntico al de tus contenedores */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); 
-    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
 
-/* Efecto interactivo al pasar el cursor o seleccionarlo */
-.font-dropdown-top:focus,
-.font-dropdown-top:hover {
-    border-color: var(--color-blue);
-    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15), 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-}
-
-/* BLOQUE DE FEEDBACK */
 .feedback-card {
     background-color: var(--bg-card);
     border-radius: 16px;
@@ -546,10 +552,10 @@ body {
     gap: 1rem;
 }
 
-.feedback-title {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text-muted);
+.feedback-title { 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    color: var(--text-muted); 
 }
 
 .feedback-phrase { 
@@ -576,94 +582,59 @@ body {
     padding: 0.75rem 1rem;
     border-radius: 0 8px 8px 0;
     font-size: 0.9rem;
-    line-height: 1.5;
 }
 
-/* ==========================================================================
-   5. CONTENEDOR DE NAVEGACIÓN Y COMPONENTES GLOBALES
-   ========================================================================== */
-.card-actions {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 1rem;
-    margin-top: auto;
-    padding-top: 1rem;
+.card-actions { 
+    display: flex; 
+    flex-direction: column-reverse; 
+    gap: 1rem; 
+    padding-top: 1rem; 
 }
 
-.report-btn {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    text-align: center;
-    padding: 0.5rem 0;
+.report-btn { 
+    background: none; 
+    border: none; 
+    color: var(--text-muted); 
+    font-weight: 500; 
+    font-size: 0.9rem; 
+    cursor: pointer; 
 }
 
-.navigation-buttons {
-    display: flex;
-    flex-direction: column;
+.navigation-buttons { 
+    display: flex; 
+    flex-direction: column; 
     gap: 12px; 
-    align-items: stretch;
-    width: 100%;
-}
-
-.navigation-buttons * {
-    width: 100%;
-    text-align: center;
+    width: 100%; 
 }
 
 .back-question-btn {
-    background-color: transparent;
-    color: var(--text-muted);
+    background-color: transparent; 
+    color: var(--text-muted); 
     border: 2px solid #E2E8F0;
-    padding: 0.85rem 1.5rem;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    font-weight: 600;
+    padding: 0.85rem 1.5rem; 
+    border-radius: 12px; 
+    font-weight: 600; 
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.back-question-btn:hover {
-    border-color: #CBD5E1;
-    color: var(--text-dark);
-    background-color: #F8FAFC;
 }
 
 .next-btn {
-    background-color: var(--color-orange);
-    color: white;
+    background-color: var(--color-orange); 
+    color: white; 
     border: none;
-    padding: 0.85rem 2.5rem;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
+    padding: 0.85rem 2.5rem; 
+    border-radius: 12px; 
+    font-weight: 700; 
     cursor: pointer;
-    box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2);
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-.next-btn:hover { 
-    background-color: #EA580C; 
 }
 
 .btn-disabled { 
     background-color: #CBD5E1 !important; 
     color: #94A3B8 !important; 
     cursor: not-allowed !important; 
-    box-shadow: none !important; 
-    transform: none !important; 
-}
-
-.hidden { 
-    display: none !important; 
 }
 
 /* ==========================================================================
-   6. DISEÑO RESPONSIVO MÓVIL
+   6. DISEÑO RESPONSIVO MÓVIL OPTIMIZADO
    ========================================================================== */
 @media (max-width: 768px) {
     .menu-toggle-btn { 
@@ -676,12 +647,12 @@ body {
     }
     
     .sidebar {
-        position: absolute;
-        top: 0;
+        position: absolute; 
+        top: 0; 
         left: -280px; 
-        width: 280px;
+        width: 280px; 
         height: 100%;
-        z-index: 50;
+        z-index: 50; 
         transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
     }
@@ -689,41 +660,10 @@ body {
     .sidebar.open { 
         left: 0; 
     }
-
+    
     .main-container { 
         padding: 1rem 0.75rem; 
         gap: 1rem; 
-    }
-    
-    .instruction-card { 
-        padding: 1.25rem 1rem; 
-    }
-    
-    .practice-card { 
-        padding: 1.5rem 1rem; 
-        gap: 1.25rem; 
-    }
-    
-    .response-card { 
-        padding: 1.25rem 1rem; 
-    }
-    
-    .progress-container { 
-        width: 55%; 
-    }
-    
-    .progress-text { 
-        font-size: 0.75rem; 
-    }
-
-    .audio-buttons-group { 
-        flex-direction: column; 
-        gap: 1rem; 
-    }
-    
-    .interactive-wave-box { 
-        width: 100%; 
-        max-width: 260px; 
     }
 
     .split-response-card { 
@@ -739,82 +679,20 @@ body {
         padding: 1rem 1.25rem !important; 
         font-size: 0.95rem !important; 
     }
+
+    .practice-card.split-response-card { 
+        flex-direction: row !important; 
+    }
+    
+    .practice-card.split-response-card .response-left-pane,
+    .practice-card.split-response-card .response-right-pane { 
+        flex: 1 !important; 
+        width: 50% !important; 
+    }
 }
 
 @media (max-width: 400px) {
     .progress-container { 
         display: none; 
-    }
-}
-
-/* ==========================================================================
-   10. OPTIMIZACIÓN DE REPRODUCTOR SUPERIOR DIVIDIDO EN FILA
-   ========================================================================== */
-/* Forzamos a que ambos paneles de la tarjeta multimedia se distribuyan al 50% exacto */
-.practice-card.split-response-card .response-left-pane,
-.practice-card.split-response-card .response-right-pane {
-    flex: 1 !important;
-    width: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-/* Mantenemos la visualización horizontal de la fila en celulares para esta tarjeta */
-@media (max-width: 768px) {
-    .practice-card.split-response-card {
-        flex-direction: row !important;
-        gap: 0.75rem !important;
-        padding: 1.5rem 1rem !important;
-    }
-}
-
-/* ==========================================================================
-   11. CONTROL DE ANCHO FIJO EN FILA (MÓVIL ADAPTATIVO SIN DESBORDES)
-   ========================================================================== */
-@media (max-width: 768px) {
-    /* Forzamos a que la fila multimedia NUNCA se rompa en columnas y se quede en fila */
-    .practice-card div[style*="display: flex"] {
-        flex-direction: row !important;
-        gap: 0.5rem !important; /* Espaciado más compacto para que quepa todo */
-        width: 100% !important;
-        justify-content: center !important;
-        align-items: center !important;
-    }
-
-    /* Ajustamos los contenedores de los botones al 50% exacto dentro del espacio móvil */
-    .practice-card div[style*="display: flex"] > div {
-        width: 48% !important; 
-        flex: 1 !important;
-    }
-
-    /* Mantenemos la línea divisoria vertical central visible y estilizada en celulares */
-    .practice-card .response-divider-line {
-        display: block !important;
-        align-self: stretch !important;
-        margin: 0 0.5rem !important;
-        width: 1px !important;
-        background-color: #E2E8F0 !important;
-    }
-
-    /* Optimizamos los botones para que reduzcan su tamaño y quepan lado a lado en el teléfono */
-    .practice-card .audio-btn {
-        width: 100% !important;
-        justify-content: center !important;
-        white-space: nowrap !important;        /* Evita que el texto se rompa en dos líneas */
-    }
-
-    /* Centramos el contenedor de ondas y velocidad justo debajo */
-    .practice-card .interactive-wave-box {
-        width: 100% !important;
-        max-width: 240px !important; /* Un poco más estrecho para pantallas ultra pequeñas */
-    }
-}
-
-/* Ajuste extra para celulares extremadamente pequeños (pantallas menores a 360px) */
-@media (max-width: 360px) {
-    .practice-card .audio-btn {
-        font-size: 0.95rem !important;
-        padding: 0.75rem 0.25rem !important;
     }
 }

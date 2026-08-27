@@ -1,20 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. MAPEO DE FONEMAS A LOS ENTRIES DEL JSON ---
+    // --- MAPEO DE FONEMAS A LOS ENTRIES DEL JSON ---
     const reverseFonemaMapping = { "1": "ə", "2": "ɪ", "3": "ɛ", "4": "æ", "5": "ʌ" };
     
-    // Rutas base en GitHub para audios y base de datos
+    // Rutas de GitHub para recursos externos
     const baseAudioUrl = "https://raw.githubusercontent.com/vecrecemosmx-cyber/vecrecemosmx-cyber.github.io/main/databases/audio/";
     const jsonUrl = "https://raw.githubusercontent.com/vecrecemosmx-cyber/vecrecemosmx-cyber.github.io/main/databases/tables/words_database.json";
     
-    // --- 2. VARIABLES DE CONTROL GLOBALES DEL EJERCICIO ---
+    // --- VARIABLES DE CONTROL GLOBALES ---
     let datasetByFonema = { "ə": [], "ɪ": [], "ɛ": [], "æ": [], "ʌ": [] };
     let currentFonema = "ə";       
     let currentWordIndex = 0;       
     let currentQuestionIndex = 0;   
     let hasAnsweredCorrectly = false; 
 
-    // Enunciado exacto de tus 5 preguntas secuenciales
     const questionsTexts = [
         "1. ¿Cuántos sonidos componen la palabra?",
         "2. ¿Cuántos fonemas consonantes tiene?",
@@ -23,8 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
         "5. ¿En qué sílaba está la vocal que estamos practicando?"
     ];
 
-    // --- 3. CAPTURA DE COMPONENTES DEL DOM (Sincronizado al HTML) ---
-    const instructionText = document.querySelector('.instruction-text');
+    // --- CAPTURA DE COMPONENTES DEL DOM ---
+    const loginScreen = document.getElementById('login-screen');
+    const appScreen = document.getElementById('app-screen');
+    const googleMockBtn = document.getElementById('google-login-mock');
+
+    const instructionText = document.getElementById('instruction-text');
     const answerInput = document.getElementById('student-answer');
     const errorMessage = document.getElementById('error-message');
     const checkAnswerButton = document.getElementById('check-answer-btn'); 
@@ -39,11 +42,28 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const playWordButton = document.getElementById('play-word-btn');
     const playVocalButton = document.getElementById('play-vocal-btn');
-    const responseCard = document.querySelector('.response-card');
     const speedSlider = document.getElementById('speed-slider');
     const speedBubble = document.getElementById('speed-bubble');
 
-    // --- 4. FUNCIÓN DE CARGA DINÁMICA CON JSON ---
+    // ==========================================
+    // SISTEMA DE ACCESO CON GOOGLE MOCK
+    // ==========================================
+    function initLoginFlow() {
+        if (googleMockBtn) {
+            googleMockBtn.textContent = "Iniciar Sesión con Google";
+            googleMockBtn.addEventListener('click', () => {
+                // Simulación de acceso concedido con éxito
+                document.body.classList.add('plataforma-body');
+                loginScreen.classList.add('hidden');
+                appScreen.classList.remove('hidden');
+                
+                // Dispara inmediatamente el ejercicio al entrar
+                loadDatabaseFromJSON();
+            });
+        }
+    }
+
+      // --- CARGA DINÁMICA CON JSON ---
     async function loadDatabaseFromJSON() {
         try {
             const response = await fetch(jsonUrl);
@@ -66,8 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            console.log("Base de datos cargada:", datasetByFonema);
-            
             if (datasetByFonema[currentFonema].length > 0) {
                 initExercise(); 
             } else {
@@ -80,11 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-      // --- 5. LÓGICA DE CONTROL E INICIALIZACIÓN ---
+    // --- LÓGICA DE CONTROL E INICIALIZACIÓN ---
     function initExercise() {
         const currentDataArray = datasetByFonema[currentFonema];
         if (!currentDataArray || currentDataArray.length === 0) {
-            instructionText.textContent = "No hay palabras disponibles para este fonema.";
+            instructionText.textContent = "No hay palabras disponibles.";
             return;
         }
 
@@ -101,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgressBar();
         togglePrevButtonVisibility();
 
-        // Enlace del deslizador interactivo de velocidad
         if (speedSlider && speedBubble) {
             speedBubble.textContent = `${parseFloat(speedSlider.value).toFixed(2)}x`;
             speedSlider.oninput = (event) => {
@@ -110,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // AVANZAR EN ORDEN SECUENCIAL (BOTÓN NARANJA DE NAVEGACIÓN)
+    // NAVEGACIÓN ENTRE RETOS
     function processNextQuestion(event) {
         if (event) event.preventDefault();
         if (!hasAnsweredCorrectly) return;
@@ -127,26 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalWordsInBlock = datasetByFonema[currentFonema].length;
             currentWordIndex = (currentWordIndex < totalWordsInBlock - 1) ? currentWordIndex + 1 : 0;
             resetEntireExercise();
-            alert(`📝 Siguiente reto en orden. Presiona 'Escuchar Palabra' para practicar la palabra #${currentWordIndex + 1}.`);
+            alert(`📝 Siguiente reto cargado. Presiona 'Palabra' para practicar.`);
         }
     }
 
-    // RETROCEDER PREGUNTA (BOTÓN GRIS)
     function processPreviousQuestion(event) {
         if (event) event.preventDefault();
-
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             answerInput.value = "";
             feedbackCard.classList.add('hidden');
-
             updateProgressBar();
             initExercise();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    // EVALUACIÓN DE RESPUESTA
+      // EVALUACIÓN DE RESPUESTA
     function processCheckAnswer(event) {
         if (event) event.preventDefault();
         
@@ -183,12 +197,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const digitoB = dbValue.charAt(1);
                 if (value === digitoA || value === digitoB) {
                     isCorrect = true;
-                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la sílaba ${value}. También aparece en la sílaba ${value === digitoA ? digitoB : digitoA}.`;
+                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la sílaba ${value}.`;
                 }
             } else {
                 if (value === dbValue) {
                     isCorrect = true;
-                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la posición o sílaba: ${dbValue}.`;
+                    successNote = `¡Felicidades! La vocal /${currentFonema}/ se ubica en la posición: ${dbValue}.`;
                 }
             }
         }
@@ -203,24 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
             actionButton.classList.remove('btn-disabled');
         } else {
             feedbackPhrase.innerHTML = `Tu respuesta: <span class="word-error">${value}</span>. ¡Inténtalo de nuevo!`;
-            tipText.innerHTML = `Anula sonidos de izquierda a derecha para contar de forma óptima los fonemas.<br><br>Revisa la estructura para: <strong>${currentData.word}</strong>.`;
+            tipText.innerHTML = `Revisa la estructura para: <strong>${currentData.word}</strong>.`;
             hasAnsweredCorrectly = false;
             actionButton.disabled = true;
             actionButton.classList.add('btn-disabled');
         }
-        setTimeout(() => { feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
     }
 
-    // --- 6. CONTROLADORES DE AUDIO Y REPRODUCCIÓN ---
-    // REPRODUCCIÓN AUDIO PALABRA CON ENFOQUE INMEDIATO Y TECLADO
+    // --- REPRODUCCIÓN AUDIO ---
     function handlePlayWordAudio(event) {
         event.preventDefault();
-        
-        // 1. Hacemos el focus inmediatamente para activar el teclado numérico sin retrasos
         answerInput.focus();
-        
-        // 2. Hacemos el desplazamiento suave de la pantalla de forma paralela
-        responseCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
         const currentData = datasetByFonema[currentFonema][currentWordIndex];
         if (!currentData) return;
@@ -235,39 +242,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
+    // CONTROLADORES DE AUDIO Y EVENTOS RESTANTES
     function handlePlayVocalAudio(event) {
         event.preventDefault();
-        const vocalAudioFiles = { 
-            "ə": "PHONEME-DUST.mp3", 
-            "ɪ": "PHONEME-PINK.mp3", 
-            "ɛ": "PHONEME-RED.mp3", 
-            "æ": "PHONEME-SAND.mp3", 
-            "ʌ": "PHONEME-CUP.mp3" 
-        };
+        const vocalAudioFiles = { "ə": "PHONEME-DUST.mp3", "ɪ": "PHONEME-PINK.mp3", "ɛ": "PHONEME-RED.mp3", "æ": "PHONEME-SAND.mp3", "ʌ": "PHONEME-CUP.mp3" };
         const fileName = vocalAudioFiles[currentFonema];
-        
         if (fileName) {
             const vocalAudio = new Audio(baseAudioUrl + fileName);
             if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-            vocalAudio.play().catch(error => { console.error("Error al cargar audio:", error); });
+            vocalAudio.play().catch(err => console.log(err));
         }
     }
 
-    // --- 7. UTILIDADES DE INTERFAZ Y ACTUALIZACIÓN ---
+    // --- UTILIDADES DE INTERFAZ ---
     function changeFonemaDropdown(event) {
         currentFonema = event.target.value;
         currentWordIndex = 0;
         resetEntireExercise();
-
-        document.querySelectorAll('.menu-item').forEach((item) => {
-            item.classList.toggle('active', item.textContent.includes(currentFonema));
-        });
     }
 
-    function togglePrevButtonVisibility() {
-        prevButton.classList.toggle('hidden', currentQuestionIndex === 0);
-    }
+    function togglePrevButtonVisibility() { prevButton.classList.toggle('hidden', currentQuestionIndex === 0); }
 
     function updateProgressBar() {
         const totalQuestions = questionsTexts.length;
@@ -283,11 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         initExercise();
     }
 
+    // CONTROLADORES DE ERRORES E INICIALIZACIÓN FINAL
     function showError(message) {
         errorMessage.textContent = message;
         answerInput.classList.add('input-invalid');
-        answerInput.style.transform = 'translateX(5px)';
-        setTimeout(() => answerInput.style.transform = 'translateX(0)', 100);
     }
 
     function clearError() {
@@ -295,15 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
         answerInput.classList.remove('input-invalid');
     }
 
-    // --- 8. ASOCIACIÓN DE EVENTOS (LISTENERS) ---
-    answerInput.addEventListener('input', () => { 
-        if (errorMessage.textContent !== "") clearError(); 
-    });
-    
+    // --- ASOCIACIÓN DE EVENTOS ---
+    answerInput.addEventListener('input', () => { if (errorMessage.textContent !== "") clearError(); });
     answerInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            if (!hasAnsweredCorrectly) processCheckAnswer(e); else processNextQuestion(e);
-        }
+        if (e.key === 'Enter') { if (!hasAnsweredCorrectly) processCheckAnswer(e); else processNextQuestion(e); }
     });
 
     checkAnswerButton.addEventListener('click', processCheckAnswer);
@@ -313,28 +301,16 @@ document.addEventListener('DOMContentLoaded', () => {
     playVocalButton.addEventListener('click', handlePlayVocalAudio);
     fonemaSelect.addEventListener('change', changeFonemaDropdown);
 
-    // CONTROL DEL MENÚ DE HAMBURGUESA MÓVIL
+    // CONTROL DEL MENÚ HAMBURGUESA
     const menuToggle = document.getElementById('menu-toggle');
     const sidebarElement = document.getElementById('sidebar');
-
     if (menuToggle && sidebarElement) {
-        const toggleSidebarMenu = (e) => { 
-            e.preventDefault(); 
-            e.stopPropagation(); 
-            sidebarElement.classList.toggle('open'); 
-        };
-        menuToggle.addEventListener('click', toggleSidebarMenu);
-        menuToggle.addEventListener('touchstart', toggleSidebarMenu, { passive: false });
-
-        const closeSidebarMenu = (e) => {
-            if (!sidebarElement.contains(e.target) && !menuToggle.contains(e.target) && sidebarElement.classList.contains('open')) {
-                sidebarElement.classList.remove('open');
-            }
-        };
-        document.addEventListener('click', closeSidebarMenu);
-        document.addEventListener('touchstart', closeSidebarMenu);
+        menuToggle.addEventListener('click', (e) => { e.stopPropagation(); sidebarElement.classList.toggle('open'); });
+        document.addEventListener('click', (e) => {
+            if (!sidebarElement.contains(e.target) && sidebarElement.classList.contains('open')) sidebarElement.classList.remove('open');
+        });
     }
 
-    // ARRANQUE AUTOMÁTICO DE LA APLICACIÓN
-    loadDatabaseFromJSON();
+    // Inicializa el flujo inicial de Login simulado
+    initLoginFlow();
 });
