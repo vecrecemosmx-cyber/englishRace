@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
             actionButton.classList.remove('btn-disabled');
         } else {
             feedbackPhrase.innerHTML = `Tu respuesta: <span class="word-error">${value}</span>. ¡Inténtalo de nuevo!`;
-            tipText.innerHTML = `No olvides utilizar la técnica de eliminación de sonidos. Uno por uno de izquierda a derecha para no deformar la forma en que se pronuncian los fonemas vocales ni consonantes`;
+            tipText.innerHTML = `Recuerda que los diptongos o las vocales compuestas cuentan como 1 sonido. Tampoco te olvides de utilizar la técnica de eliminación de sonidos. Uno por uno de izquierda a derecha los quitamos y al mismo tiempo vamos pronunciando en voz alta lo que queda de la palabra para no deformar la forma individual de los fonemas vocales ni consonantes.`;
             hasAnsweredCorrectly = false;
             actionButton.disabled = true;
             actionButton.classList.add('btn-disabled');
