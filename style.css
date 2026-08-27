@@ -696,3 +696,56 @@ body.plataforma-body {
         display: none; 
     }
 }
+
+/* ==========================================================================
+   OPTIMIZACIÓN DE TARJETA MULTIMEDIA UNIFICADA
+   ========================================================================== */
+.unified-media-card {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    padding: 2rem !important;
+}
+
+/* Fila de botones con división invisible al 50% */
+.media-buttons-row {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    gap: 1.5rem !important;
+}
+
+.media-column-left, 
+.media-column-right {
+    flex: 1 !important;
+    width: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* Fila inferior para el slider (centrado y continuo) */
+.media-slider-row {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding-top: 0.5rem;
+}
+
+/* Ajuste responsivo para celulares */
+@media (max-width: 480px) {
+    .unified-media-card {
+        padding: 1.25rem 1rem !important;
+        gap: 1.25rem !important;
+    }
+    
+    .media-buttons-row {
+        gap: 0.75rem !important;
+    }
+    
+    .unified-media-card .audio-btn {
+        font-size: 1rem !important;
+        padding: 0.85rem 1rem !important;
+    }
+}
