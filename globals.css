@@ -1,0 +1,638 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ==========================================================================
+   VARIABLES DE COLOR ORIGINALES DE TU CODEPEN
+   ========================================================================== */
+:root {
+    --bg-login: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-main: #F4F7FA;          
+    --bg-card: #FFFFFF;          
+    --text-dark: #1E293B;        
+    --text-muted: #64748B;       
+    --color-blue: #0284C7;       
+    --color-green: #22C55E;      
+    --color-yellow: #FEF08A;     
+    --color-yellow-dark: #CA8A04;
+    --color-orange: #F97316;     
+    --bg-sidebar: #0F172A;       
+    --border-color: #cbd5e1;
+}
+
+/* ==========================================================================
+   BLINDAJE DE TU PLATAFORMA: ESTOS ESTILOS SOLO AFECTAN A LA INTERFAZ INTERNA
+   ========================================================================== */
+.plataforma-body {
+    background-color: var(--bg-main) !important;
+    background: var(--bg-main) !important;
+    min-height: 100vh;
+    color: var(--text-dark);
+    box-sizing: border-box;
+}
+
+.plataforma-body * {
+    box-sizing: border-box;
+}
+
+.plataforma-body .hidden { 
+    display: none !important; 
+}
+
+/* INTERFAZ BASE DE LA PLATAFORMA (HEADER, LAYOUT, SIDEBAR) */
+.plataforma-body .app-header {
+    background-color: var(--bg-card);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #E2E8F0;
+    z-index: 10;
+    width: 100%;
+}
+
+.plataforma-body .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.plataforma-body .logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-blue);
+    letter-spacing: -0.5px;
+}
+
+.plataforma-body .menu-toggle-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 100;
+}
+
+.plataforma-body .hamburger-line {
+    width: 100%;
+    height: 2.5px;
+    background-color: var(--text-dark);
+    border-radius: 99px;
+}
+
+.plataforma-body .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 40%;
+    max-width: 400px;
+}
+
+.plataforma-body .progress-bar-bg {
+    background-color: #E2E8F0;
+    border-radius: 99px;
+    height: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.plataforma-body .progress-bar-fill {
+    background-color: var(--color-blue);
+    height: 100%;
+    width: 20%; 
+    border-radius: 99px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.plataforma-body .progress-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.plataforma-body .avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #CBD5E1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #475569;
+}
+
+.plataforma-body .app-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr; 
+    flex: 1;
+    min-height: calc(100vh - 73px);  
+    width: 100%;
+}
+
+.plataforma-body .sidebar {
+    background-color: var(--bg-sidebar);
+    color: #F8FAFC;
+    padding: 2rem 1.5rem;
+    border-right: 1px solid #1E293B;
+}
+
+.plataforma-body .sidebar-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #94A3B8;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.plataforma-body .sidebar-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.plataforma-body .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #CBD5E1;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.plataforma-body .menu-item:hover {
+    background-color: #1E293B;
+    color: white;
+}
+
+.plataforma-body .menu-item.active {
+    background-color: var(--color-blue);
+    color: white;
+    font-weight: 600;
+}
+
+.plataforma-body .menu-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: #1E293B;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #94A3B8;
+}
+
+.plataforma-body .menu-item.active .menu-number {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* ÁREA CENTRAL DE TRABAJO Y MULTIMEDIA */
+.plataforma-body .main-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.plataforma-body .instruction-card {
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #E2E8F0;
+    display: flex;
+    align-items: center;
+}
+
+.plataforma-body .instruction-text {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.4;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.plataforma-body .practice-card {
+    background-color: var(--bg-card);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.plataforma-body .audio-btn {
+    background-color: var(--color-blue);
+    color: white; 
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 99px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.plataforma-body .audio-btn:hover {
+    background-color: #0369A1;
+    transform: scale(1.01);
+}
+
+.plataforma-body .vocal-btn {
+    background-color: #10B981 !important; 
+}
+
+.plataforma-body .vocal-btn:hover {
+    background-color: #059669 !important; 
+}
+
+/* ONDA DE SONIDO ANIMADA Y DESLIZADOR */
+.plataforma-body .wave-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 50px;
+    width: 240px;
+}
+
+.plataforma-body .wave-bar {
+    width: 5px;
+    background-color: var(--color-blue);
+    border-radius: 99px;
+    animation: pulse 1.2s infinite ease-in-out;
+    height: 15px;
+}
+
+.plataforma-body .wave-bar:nth-child(odd) { background-color: #38BDF8; animation-delay: 0.2s; }
+.plataforma-body .wave-bar:nth-child(3n) { background-color: #34D399; animation-delay: 0.4s; }
+
+@keyframes pulse {
+    0%, 100% { height: 10px; }
+    50% { height: 45px; }
+}
+
+.plataforma-body .interactive-wave-box {
+    position: relative;
+    width: 260px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+.plataforma-body .interactive-wave-box .wave-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.plataforma-body .interactive-wave-box::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #CBD5E1;
+    transform: translateY(-50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.plataforma-body .over-wave-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    z-index: 3;
+    cursor: pointer;
+}
+
+.plataforma-body .over-wave-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--color-blue);
+    border: 3px solid #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(2, 132, 199, 0.4);
+    transition: transform 0.1s ease, background-color 0.2s;
+    z-index: 4;
+}
+
+.plataforma-body .speed-bubble-indicator {
+    position: absolute;
+    bottom: -24px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--color-blue);
+    background-color: #E0F2FE;
+    padding: 2px 8px;
+    border-radius: 99px;
+    pointer-events: none;
+}
+
+/* TARJETAS DE RESPUESTA Y RETROALIMENTACIÓN */
+.plataforma-body .response-card {
+    background-color: var(--bg-card);
+    border-radius: 24px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+}
+
+.plataforma-body .split-response-card {
+    display: flex !important;
+    flex-direction: row !important; 
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1.5rem !important;
+    padding: 2rem !important;
+}
+
+.plataforma-body .response-left-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.plataforma-body .response-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.plataforma-body .response-input {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    border: 2px solid #E2E8F0;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.plataforma-body .response-input:focus {
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+}
+
+.plataforma-body .error-text {
+    color: var(--color-orange);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    min-height: 20px;
+}
+
+.plataforma-body .input-invalid {
+    border-color: var(--color-orange) !important;
+    box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15) !important;
+}
+
+.plataforma-body .response-divider-line {
+    display: block !important;
+    width: 2px !important;
+    background-color: #E2E8F0 !important;
+    align-self: stretch !important;
+    margin: 0 0.5rem !important;
+}
+
+.plataforma-body .response-right-pane {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plataforma-body .check-green-btn {
+    background-color: var(--color-orange) !important; 
+    color: white !important;
+    border: none !important;
+    padding: 1.1rem 2rem !important;
+    border-radius: 16px !important;
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2) !important;
+    transition: background-color 0.2s, transform 0.1s !important;
+    white-space: nowrap;
+}
+
+.plataforma-body .check-green-btn:hover { 
+    background-color: #EA580C !important; 
+}
+
+.plataforma-body .font-dropdown-top {
+    font-size: 1rem;           
+    font-weight: 600;             
+    border-radius: 12px;          
+    background-color: var(--bg-card); 
+    border: 1px solid #E2E8F0;    
+    padding: 0.5rem 1rem;     
+    color: #475569;      
+    outline: none;
+    cursor: pointer;
+}
+
+.plataforma-body .feedback-card {
+    background-color: var(--bg-card);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #E2E8F0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.plataforma-body .feedback-title { 
+    font-size: 0.9rem; 
+    font-weight: 700; 
+    color: var(--text-muted); 
+}
+
+.plataforma-body .feedback-phrase { 
+    font-size: 1.15rem; 
+    font-weight: 600; 
+}
+
+.plataforma-body .word-correct { 
+    color: var(--color-green); 
+    border-bottom: 2px solid var(--color-green); 
+    padding-bottom: 2px; 
+}
+
+.plataforma-body .word-error { 
+    color: var(--color-orange); 
+    background-color: #FFEDD5; 
+    padding: 2px 6px; 
+    border-radius: 4px; 
+}
+
+.plataforma-body .tip-box {
+    background-color: #F8FAFC;
+    border-left: 4px solid var(--color-blue);
+    padding: 0.75rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+}
+
+.plataforma-body .navigation-buttons { 
+    display: flex; 
+    flex-direction: row; 
+    gap: 12px; 
+    width: 100%; 
+}
+
+.plataforma-body .back-question-btn {
+    background-color: transparent; 
+    color: var(--text-muted); 
+    border: 2px solid #E2E8F0;
+    padding: 0.85rem 1.5rem; 
+    border-radius: 12px; 
+    font-weight: 600; 
+    cursor: pointer;
+}
+
+.plataforma-body .next-btn {
+    background-color: var(--color-orange); 
+    color: white; 
+    border: none;
+    padding: 0.85rem 2.5rem; 
+    border-radius: 12px; 
+    font-weight: 700; 
+    cursor: pointer;
+}
+
+.plataforma-body .btn-disabled { 
+    background-color: #CBD5E1 !important; 
+    color: #94A3B8 !important; 
+    cursor: not-allowed !important; 
+}
+
+.plataforma-body .unified-media-card {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    padding: 2rem !important;
+}
+
+.plataforma-body .media-buttons-row {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    gap: 1.5rem !important;
+}
+
+.plataforma-body .media-column-left, 
+.plataforma-body .media-column-right {
+    flex: 1 !important;
+    width: 50% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.plataforma-body .media-slider-row {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding-top: 0.5rem;
+}
+
+/* OPTIMIZACIÓN RESPONSIVA MÓVIL */
+@media (max-width: 768px) {
+    .plataforma-body .menu-toggle-btn { 
+        display: flex; 
+    }
+    
+    .plataforma-body .app-layout { 
+        grid-template-columns: 1fr; 
+        position: relative; 
+    }
+    
+    .plataforma-body .sidebar {
+        position: absolute; 
+        top: 0; 
+        left: -280px; 
+        width: 280px; 
+        height: 100%;
+        z-index: 50; 
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .plataforma-body .sidebar.open { 
+        left: 0; 
+    }
+    
+    .plataforma-body .main-container { 
+        padding: 1rem 0.75rem; 
+        gap: 1rem; 
+    }
+
+    .plataforma-body .split-response-card { 
+        gap: 0.75rem !important; 
+        padding: 1rem !important; 
+    }
+    
+    .plataforma-body .response-divider-line { 
+        margin: 0 0.25rem !important; 
+    }
+    
+    .plataforma-body .check-green-btn { 
+        padding: 1rem 1.25rem !important; 
+        font-size: 0.95rem !important; 
+    }
+}
